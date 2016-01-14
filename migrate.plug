@@ -1,0 +1,9 @@
+[Core]
+Name = Migrate
+Module = migrate
+
+[Python]
+Version = 2+
+
+[Documentation]
+Description = Migrate Storage from 7mode to BBCS
