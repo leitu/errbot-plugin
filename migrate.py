@@ -5,7 +5,7 @@ import paramiko
 
 class Migrate(BotPlugin):
     """Use paramiko to connect remote server"""
-    def remote_excute(self, script, remote_server='10.10.0.3', username="root", password="_aoO1CBaYbshr1VS_LGh"):
+    def remote_excute(self, script, remote_server='10.10.0.3', username="root", password="xxxxx"):
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         client.connect(remote_server, username, password)
@@ -22,7 +22,7 @@ class Migrate(BotPlugin):
         numbers = args.pop(0)
         nfs = args.pop(0)
 
-        script =  "/root/stephen/storage_migrations/migrate-env-atu.sh" + " " + user + " " + environment + " " + numbers + " " + nfs
+        script =  "/root/migrate-env-atu.sh" + " " + user + " " + environment + " " + numbers + " " + nfs
 
         res = self.remote_excute(script)
         if res == 0:
@@ -39,7 +39,7 @@ class Migrate(BotPlugin):
         dc = args.pop(0)
         datastore = args.pop(0)
  
-        script = '/root/stephen/storage_migrations/start-env-atu.sh' + " " + environment + " " + numbers + " " + dc + " " + datastore
+        script = '/root/start-env-atu.sh' + " " + environment + " " + numbers + " " + dc + " " + datastore
         res = self.remote_excute(script)
         if res == 0:
             response = tenv().get_template('start.md').render(environment=environment)
