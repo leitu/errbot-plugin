@@ -5,11 +5,10 @@ import paramiko,time
 
 class Migrate(BotPlugin):
     """Use paramiko to connect remote server"""
-    def remote_excute(self, script):
+    def remote_excute(self, script, remote_server='10.10.0.3', username="root", password="xxxxx"):
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect('10.10.0.3', username="root", password="_aoO1CBaYbshr1VS_LGh",timeout=60)
-        #client.connect('10.6.15.109', username='root', password='58mfJGsv#q@4')
+        client.connect(remote_server, username, password, timeout=60)
         sleeptime = 0.001
         outdata, errdata = '', ''
         ssh_transp = client.get_transport()
@@ -29,8 +28,6 @@ class Migrate(BotPlugin):
         res = chan.recv_exit_status()
         ssh_transp.close()
 
-        #print(outdata)
-        #print(errdata)
         return res
       
     @botcmd(split_args_with=None, template="migrate")
@@ -42,8 +39,6 @@ class Migrate(BotPlugin):
         nfs = args.pop(0)
 
         script =  "/root/stephen/storage_migrations/migrate-env-atu.sh" + " -u " + user + " -e " + environment + " -n " + numbers + " -s " + nfs
-        #script = "/opt/chef/embedded/bin/ruby /usr/bin/chef-client -d -c /etc/chef/client.rb -L /var/log/chef/client.log -P /var/run/chef/client.pid -i 3600 -s 600 --fork"
-
 
         res = self.remote_excute(script)
         if res == 0:
@@ -61,7 +56,6 @@ class Migrate(BotPlugin):
         datastore = args.pop(0)
  
         script = '/root/stephen/storage_migrations/start-env-atu.sh' + " -e " + environment + " -n " + numbers + " -d " + dc + " -s " + datastore
-        #script = "/opt/chef/embedded/bin/ruby /usr/bin/chef-client -d -c /etc/chef/client.rb -L /var/log/chef/client.log -P /var/run/chef/client.pid -i 3600 -s 600 --fork"
         res = self.remote_excute(script)
         if res == 0:
             response = tenv().get_template('start.md').render(environment=environment)
