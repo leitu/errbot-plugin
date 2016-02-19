@@ -1,1 +1,1 @@
-{{ environment }} is done, please process new stage. 
+{{ environment }} is done, please process next stage. 
